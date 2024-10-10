@@ -1,15 +1,9 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
 
-// Fix for marker icons not displaying
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
 
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
+
 
 const MapComponent = () => {
   const position = [9.770004, 77.090713];
