@@ -23,13 +23,13 @@ const features = [
 const services = [
   {
     id: uuidv4(),
-    title: "Room Service",
-    description: "Order food and drinks directly to your room.",
+    title: "Rooms",
+    description: "Clean rooms with AC and Non Ac",
   },
   {
     id: uuidv4(),
     title: "Outdoor Activities",
-    description: "Access to gardens, outdoor seating, or BBQ facilities.",
+    description: "Access to gardens, outdoor seating",
   },
   {
     id: uuidv4(),

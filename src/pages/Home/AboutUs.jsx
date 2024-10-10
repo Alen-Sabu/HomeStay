@@ -1,9 +1,11 @@
 import { Box, Container, Typography } from "@mui/material";
 import aboutImage from '../../assets/01.jpeg';
 import CustomButton from "../../components/CustomButton";
+import MapComponent from "../About/Maps";
 
 const AboutUs = () => {
     return (
+
       <Box
         component="section"
         sx={{
@@ -50,6 +52,8 @@ const AboutUs = () => {
           </Container>
         </Box>
       </Box>
+     
+     
     );
   };
   
