@@ -3,49 +3,47 @@ import { Box, TextField, Button, Typography } from "@mui/material";
 import emailjs from "emailjs-com";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Name is required"),
+      email: Yup.string()
+        .email("Enter a valid email")
+        .required("Email is required"),
+      message: Yup.string().required("Message is required"),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      emailjs
+        .send(
+          "service_gmq7ru8", //service ID
+          "template_vj0rzlc", //template ID
+          {
+            to_name: "Alen Sabu",
+            from_name: values.name,
+            from_email: values.email,
+            message: values.message,
+          },
+          "8QhdQ2cUq2aJDXe8x"
+        )
+        .then(
+          (response) => {
+            toast.success("Message sent successfully");
+            resetForm(); // Reset the form on success
+          },
+          (err) => {
+            toast.error("Failed to send the message. Please try again");
+          }
+        );
+    },
   });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    emailjs
-      .send(
-        "service_gmq7ru8", //service ID
-        "template_vj0rzlc", //template ID
-        {
-          to_name: "Alen Sabu",
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        "8QhdQ2cUq2aJDXe8x"
-      )
-      .then(
-        (response) => {
-          toast.success("Message sent successfully");
-
-          setFormData({
-            name: "",
-            email: "",
-            message: "",
-          });
-        },
-        (err) => {
-          toast.error("Failed to send the message. Please try again");
-        }
-      );
-  };
 
   return (
     <Box
@@ -88,7 +86,7 @@ const ContactPage = () => {
           component="form"
           noValidate
           autoComplete="off"
-          onSubmit={handleSubmit}
+          onSubmit={formik.handleSubmit}
           sx={{
             display: "flex",
             flexDirection: "column", // Align everything vertically
@@ -100,8 +98,11 @@ const ContactPage = () => {
             label="Your Name"
             variant="outlined"
             name="name"
-            value={formData.name}
-            onChange={handleInputChange}
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur} // Trigger validation on blur
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
             sx={{
               backgroundColor: "#333",
               input: { color: "#fff" },
@@ -122,8 +123,11 @@ const ContactPage = () => {
             label="Email Address"
             variant="outlined"
             name="email"
-            value={formData.email}
-            onChange={handleInputChange}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur} // Trigger validation on blur
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
             sx={{
               backgroundColor: "#333",
               input: { color: "#fff" },
@@ -146,15 +150,16 @@ const ContactPage = () => {
             rows={4}
             variant="outlined"
             name="message"
-            value={formData.message}
-            onChange={handleInputChange}
+            value={formik.values.message}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur} // Trigger validation on blur
+            error={formik.touched.message && Boolean(formik.errors.message)}
+            helperText={formik.touched.message && formik.errors.message}
             sx={{
               backgroundColor: "#333",
-
               input: { color: "#fff" },
               label: { color: "#b0b0b0" },
               "& .MuiOutlinedInput-root": {
-                color: "#fff",
                 "& fieldset": {
                   borderColor: "#555",
                 },
